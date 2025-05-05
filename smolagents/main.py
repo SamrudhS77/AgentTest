@@ -4,7 +4,6 @@ import os
 # Load the .env file
 load_dotenv()
 
-print("Token:", os.getenv("HUGGINGFACEHUB_API_TOKEN"))
 
 
 from smolagents import (
