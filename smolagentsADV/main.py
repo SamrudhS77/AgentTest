@@ -1,5 +1,8 @@
-from dontenv import load_dotenv
+from dotenv import load_dotenv
 import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from smolagents import ToolCallingAgent, LiteLLMModel
 from tools.python_exec_tool import PythonExecutionTool
@@ -22,7 +25,7 @@ agent = ToolCallingAgent(
         FileLoaderTool()
     ],
     model = model,
-    manager_agent = manager_agent,
+    managed_agent=manager_agent,
     add_base_tools = True
 )
 
