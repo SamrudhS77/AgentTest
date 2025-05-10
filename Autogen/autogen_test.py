@@ -31,21 +31,30 @@ editor_agent = autogen.AssistantAgent(
                  "temperature": 0.0}
 )
 
+
 user_proxy = autogen.UserProxyAgent(
     name="user",
     human_input_mode="NEVER",
-    code_execution_config=False
+    code_execution_config={#"work_dir": "code_exec", 
+                           "use_docker": False}
 )
 
 
-story_prompt = ("Please write a short story about a bank heist, Oceans 11 style, which takes place in a casino on Mars.")
+
+story_prompt = (
+    "Please write a complete short story about a Mars casino heist, Oceans 11 style. "
+    "Don't generate any code or scrape data — just write the story creatively."
+)
 story = user_proxy.initiate_chat(
     writer_agent,
     message=story_prompt,
     max_turns=1
 )
 
-feedback_prompt = ("Please review the following story and provide constructive feedback along with the suggestions for improvements: "+(story))
+# Get the writer’s last message (the story text)
+story_text = story.summary.strip() if story and story.summary else ""
+
+feedback_prompt = ("Please review the following story without giving any code suggestions, and provide constructive feedback along with the suggestions for improvements: "+(story_text))
 feedback = user_proxy.initiate_chat(
     editor_agent,
     message=feedback_prompt,
