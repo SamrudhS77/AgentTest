@@ -36,3 +36,18 @@ user_proxy = autogen.UserProxyAgent(
     human_input_mode="NEVER",
     code_execution_config=False
 )
+
+
+story_prompt = ("Please write a short story about a bank heist, Oceans 11 style, which takes place in a casino on Mars.")
+story = user_proxy.initiate_chat(
+    writer_agent,
+    message=story_prompt,
+    max_turns=1
+)
+
+feedback_prompt = ("Please review the following story and provide constructive feedback along with the suggestions for improvements: "+(story))
+feedback = user_proxy.initiate_chat(
+    editor_agent,
+    message=feedback_prompt,
+    max_turns=1
+)
